@@ -1,0 +1,17 @@
+sort1: → bubble worst case Big O N^2 while best case Omega N
+
+sorted50000 → 0.40s
+
+reverse50000 → 6.5s
+
+sort2: merge pretty fast in both cases. Has to check regardless of order. Theta N log(N)
+
+sorted50000 → 0.28ss
+
+reversed50000 → 0.35s
+
+sort3: linear Theta N^2 so makes no difference if ordered or not, slow
+
+sorted 50000 → 4 s
+
+reversed50000 → 4s
