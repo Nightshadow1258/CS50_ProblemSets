@@ -36,7 +36,6 @@ int main(int argc, char *argv[])
     fgets(input, len, stdin);
 
     vote(atoi(input), candidates, num_candidates);
-    
     print_winner(candidates,num_candidates);
 
 }
@@ -98,20 +97,10 @@ void vote(int counter, candidate *candidates, int num_candidates)
 
 void print_winner(candidate *candidates, int num_candidates)
 {
-    int highest_vote=0;
-    for (int i = 0; i < num_candidates;i++)
-    {
-        if (candidates[i].num_votes > highest_vote ) 
-        {
-            highest_vote = candidates[i].num_votes;
-        }
-    }
     
-        for (int i = 0; i < num_candidates;i++)
+    for (int i = 0; i < num_candidates)
     {
-        if (candidates[i].num_votes == highest_vote ) 
-        {
-            printf("%s\n", candidates[i].name);
-        }
+        
     }
+
 }
