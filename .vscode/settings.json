@@ -2,6 +2,11 @@
     "files.associations": {
         "ratio": "c",
         "type_traits": "c",
-        "ranges": "c"
+        "ranges": "c",
+        "helpers.h": "c",
+        "bmp.h": "c",
+        "chrono": "c",
+        "variant": "c",
+        "*.tcc": "c"
     }
 }
