@@ -7,6 +7,9 @@
         "bmp.h": "c",
         "chrono": "c",
         "variant": "c",
-        "*.tcc": "c"
+        "*.tcc": "c",
+        "string": "c",
+        "string_view": "c",
+        "cstdlib": "c"
     }
 }
