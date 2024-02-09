@@ -158,9 +158,9 @@ void blur(int height, int width, RGBTRIPLE image[height][width])
             int w_start = check_limits(w - offset, width);
             int w_end = check_limits(w + offset, width);
 
-            for (int i = h_start; i < h_end; i++)
+            for (int i = h_start; i <= h_end; i++)
             {
-                for (int j = w_start; j < w_end; j++)
+                for (int j = w_start; j <= w_end; j++)
                 {
                     red += copy[i][j].rgbtRed;
                     blue += copy[i][j].rgbtBlue;
