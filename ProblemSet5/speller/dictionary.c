@@ -2,6 +2,9 @@
 
 #include <ctype.h>
 #include <stdbool.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 
 #include "dictionary.h"
 
@@ -18,6 +21,8 @@ const unsigned int N = 26;
 // Hash table
 node *table[N];
 
+void print_hashtable(void);
+
 // Returns true if word is in dictionary, else false
 bool check(const char *word)
 {
@@ -28,22 +33,109 @@ bool check(const char *word)
 // Hashes word to a number
 unsigned int hash(const char *word)
 {
-    // TODO: Improve this hash function
-    return toupper(word[0]) - 'A';
+    // // TODO: Improve this hash function
+    // int sum = 0;
+    // for (int i = 0; word[i]  != '\0';i++)
+    // {
+    //     sum += word[i];
+    // }
+    // return sum % (N+1);
+
+    // source for this: https://stackoverflow.com/questions/7700400/whats-a-good-hash-function-for-english-words
+    unsigned long hash = 5381;
+    int c;
+
+    while ((c = *word++))
+        hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
+
+    return hash % (N+1);
 }
 
 // Loads dictionary into memory, returning true if successful, else false
 bool load(const char *dictionary)
 {
     // TODO
-    return false;
+
+    char word[LENGTH + 1];
+    char character = '\0';
+    int counter = 0;
+    FILE *source = fopen(dictionary, "r");
+    if (source == NULL)
+    {
+        printf("Could not open dictionary: %s", dictionary);
+        return false;
+    }
+
+    while (fread(&character, sizeof(char), 1, source))
+    {
+
+        if (character == '\n') // word finished
+        {
+
+            // terminate string
+            word[counter] = '\0';
+            // calcualte hash value
+            int hashindex = hash(word);
+            // create new node and add to table
+            node* new_node = malloc(sizeof(node));
+            if (new_node == NULL)
+            {
+                return 1;
+            }
+            strcpy(new_node->word, word);
+            new_node->next = NULL;
+
+
+            node *current = table[hashindex];
+            // base case
+            if (table[hashindex] == NULL) // first element
+            {
+                table[hashindex] = new_node;
+                word[0] = 0; // reset string. dirty move other indices are still set
+                counter = 0; // reset counter
+                continue;
+            }
+            else
+            {
+                // find last node
+                while (current->next != NULL)
+                {
+                    current = current->next;
+                    //printf("%s\n", current->word);
+                }
+                current->next = new_node;
+                word[0] = 0; // reset string. dirty move other indices are still set
+                counter = 0; // reset counter
+                continue;
+            }
+
+        }
+
+        word[counter] = character;
+        counter++;
+    }
+    print_hashtable();
+    return true;
 }
 
 // Returns number of words in dictionary if loaded, else 0 if not yet loaded
 unsigned int size(void)
 {
     // TODO
-    return 0;
+    long counter = 0;
+     for (int i = 0; i <= N; i++)
+    {
+        node* hash = table[i];
+        while(hash != NULL)
+        {
+            hash = hash->next;
+            counter++;;
+        }
+    }
+    printf("Number of words in dictionary: %ld",counter);
+    // large dictionary has 143091 entries
+    //  small dictionary has 2  entries
+    return counter;
 }
 
 // Unloads dictionary from memory, returning true if successful, else false
@@ -51,4 +143,19 @@ bool unload(void)
 {
     // TODO
     return false;
+}
+
+void print_hashtable(void)
+{
+    for (int i = 0; i < N; i++)
+    {
+        node* hash = table[i];
+        printf("Hashtable %i:\n", i);
+        while(hash != NULL)
+        {
+            printf("%s, ", hash->word);
+            hash = hash->next;
+        }
+        printf(".\n");
+    }
 }
