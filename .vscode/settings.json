@@ -17,6 +17,7 @@
         "random": "c",
         "unordered_map": "c",
         "unordered_set": "c",
-        "sstream": "c"
+        "sstream": "c",
+        "dictionary.h": "c"
     }
 }

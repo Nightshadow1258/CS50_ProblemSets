@@ -5,6 +5,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <strings.h>
 
 #include "dictionary.h"
 
@@ -27,6 +28,19 @@ void print_hashtable(void);
 bool check(const char *word)
 {
     // TODO
+    int hashindex = hash(word);
+    node* temp = table[hashindex];
+    while(temp != NULL)
+    {
+        char * word_comp = temp->word;
+        word_comp[0] = tolower( (int) word_comp[0]); // that did the trick, not sure why the  first letter is not handles case-insnsitive
+        if (strcasecmp(word,word_comp) == 0) //match found
+        {
+            return true;
+        }
+        temp = temp->next;
+
+    }
     return false;
 }
 
@@ -45,10 +59,10 @@ unsigned int hash(const char *word)
     unsigned long hash = 5381;
     int c;
 
-    while ((c = *word++))
+    while ((c = tolower(*word++)))
         hash = ((hash << 5) + hash) + c; /* hash * 33 + c */
 
-    return hash % (N+1);
+    return hash % (N);
 }
 
 // Loads dictionary into memory, returning true if successful, else false
@@ -110,11 +124,12 @@ bool load(const char *dictionary)
             }
 
         }
-
         word[counter] = character;
         counter++;
     }
-    print_hashtable();
+
+    //print_hashtable();
+    fclose(source);
     return true;
 }
 
@@ -123,7 +138,7 @@ unsigned int size(void)
 {
     // TODO
     long counter = 0;
-     for (int i = 0; i <= N; i++)
+     for (int i = 0; i < N; i++)
     {
         node* hash = table[i];
         while(hash != NULL)
@@ -132,7 +147,7 @@ unsigned int size(void)
             counter++;;
         }
     }
-    printf("Number of words in dictionary: %ld",counter);
+    //printf("Number of words in dictionary: %ld",counter);
     // large dictionary has 143091 entries
     //  small dictionary has 2  entries
     return counter;
@@ -141,8 +156,19 @@ unsigned int size(void)
 // Unloads dictionary from memory, returning true if successful, else false
 bool unload(void)
 {
-    // TODO
-    return false;
+    for (int i = 0; i < N; i++)
+    {
+        node* temp = table[i];
+        while(table[i] != NULL)
+        {
+            temp = table[i]->next;
+            free(table[i]);
+            table[i] = temp;
+        }
+
+    }
+    
+    return true;
 }
 
 void print_hashtable(void)

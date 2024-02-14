@@ -144,7 +144,7 @@ int main(int argc, char *argv[])
     getrusage(RUSAGE_SELF, &before);
     unsigned int n = size();
     getrusage(RUSAGE_SELF, &after);
-    return 1;
+
     // Calculate time to determine dictionary's size
     time_size = calculate(&before, &after);
 
