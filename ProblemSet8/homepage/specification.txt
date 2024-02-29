@@ -1,0 +1,8 @@
+List of used HTML tags:
+- <html>
+- <head>
+- <body>
+- <title>
+- <a>
+
+List of used CSS selectors:
