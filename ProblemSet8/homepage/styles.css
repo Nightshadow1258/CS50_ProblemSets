@@ -1,8 +1,15 @@
 .page_format {
     background-color: rgb(139, 193, 255);
+    text-align: left;
+    margin: 1%;
 }
 
 .title_format {
 text-align: center;
 font-size: 36px;
+}
+
+.paragraph_headline{
+    text-align: left;
+font-size: 24px;
 }
